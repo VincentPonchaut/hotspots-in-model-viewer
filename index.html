@@ -13,26 +13,20 @@
     ></script>
   </head>
   <body>
-    <!-- <model-viewer> HTML element -->
-    <!-- <model-viewer id="v" bounds="tight" src="scene.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls poster="poster.webp" shadow-intensity="1" environment-image="neutral" auto-rotate camera-orbit="52.77deg 73.36deg auto">
-      <div class="progress-bar hide" slot="progress-bar">
-          <div class="update-bar"></div>
-      </div>
-      <button slot="ar-button" id="ar-button">
-          View in your space
-      </button>
-      <div id="ar-prompt">
-          <img src="ar_hand_prompt.png">
-      </div>
-    </model-viewer> -->
+    <!-- ---------------------------------------------------------------------------------- -->
     <model-viewer
-      id="v"
-      bounds="tight"
-      camera-controls
-      oncontextmenu="return false;"
-      src="scene.gltf"
-      min-field-of-view="10deg"
+    id="v"
+    bounds="tight"
+    camera-controls
+    oncontextmenu="return false;"
+    min-field-of-view="10deg"
+    shadow-intensity="0.4"
+    shadow-softness="0.4"
+    src="scene.gltf"
     ></model-viewer>
+    <button class="stack-top" onclick="changeCameraTarget()">Hotspot</button>
+    
+    <!-- ---------------------------------------------------------------------------------- -->
     <script type="module">
       const modelViewer = document.querySelector("#v");
       const tapDistance = 2;
@@ -41,13 +35,13 @@
       let startX, startY;
       let lastX, lastY;
       let metersPerPixel;
-
+      
       const startPan = () => {
         const orbit = modelViewer.getCameraOrbit();
         const { theta, phi, radius } = orbit;
         const psi = theta - modelViewer.turntableRotation;
         metersPerPixel =
-          (0.75 * radius) / modelViewer.getBoundingClientRect().height;
+        (0.75 * radius) / modelViewer.getBoundingClientRect().height;
         panX = [-Math.cos(psi), 0, Math.sin(psi)];
         panY = [
           -Math.cos(phi) * Math.sin(psi),
@@ -56,13 +50,13 @@
         ];
         modelViewer.interactionPrompt = "none";
       };
-
+      
       const movePan = (thisX, thisY) => {
         const dx = (thisX - lastX) * metersPerPixel;
         const dy = (thisY - lastY) * metersPerPixel;
         lastX = thisX;
         lastY = thisY;
-
+        
         const target = modelViewer.getCameraTarget();
         target.x += dx * panX[0] + dy * panY[0];
         target.y += dx * panX[1] + dy * panY[1];
@@ -178,8 +172,6 @@
         true
       );
     </script>
-    <button onclick="changeCameraTarget()">Hotspot</button>
-
     <script type = "text/javascript">
       var hotspotIndex = 0;
       var modelViewer
