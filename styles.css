@@ -15,6 +15,7 @@ model-viewer {
   background-color: #ffffff;
 }
 
+.wrapper { overscroll-behavior: none }
 
 .progress-bar {
   display: block;
